@@ -1,0 +1,63 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        link(rel="stylesheet", href="../css/style.css")
+        title Add Post
+        script(src='https://unpkg.com/axios/dist/axios.min.js')  
+        script. 
+            document.addEventListener("DOMContentLoaded", function(event) {
+                let url = document.getElementById('url')
+                let title = document.getElementById('title')
+                let description = document.getElementById('description')
+                let submitBtn = document.getElementById('submit')
+
+                let id = window.location.pathname.split('/')[2]
+                const submit = function() {
+                    axios.put(`http://localhost:4000/api/post/${id}`, {
+                        url: url.value,
+                        title: title.value,
+                        description: description.value
+                    })
+                    .then(data => { 
+                        console.log(data) 
+                    })
+                    .catch(err => console.log(err))
+                    
+                    url.value = ''
+                    title.value = ''
+                    description.value = ''
+                    window.location.href = '/'
+                }
+
+                submitBtn.addEventListener('click', submit)
+            })
+    body 
+        nav.navbar
+            ul 
+                li 
+                    a(href="/") home
+                li 
+                    a(href="/addpost") add post
+                if user === 'null'
+                    li 
+                        a(href="/login") login
+                    li 
+                        a(href="/register") register 
+                else
+                    div.left
+                        li 
+                            strong welcome #{user.name} 
+                        li 
+                            a(href="/logout").btn.red logout
+        div.update_container
+            div.form_container
+                div.form 
+                    input(type="hidden", name="_method" method='put')
+                    h1 Update Post
+                    input(type="url" name='url' placeholder='https://pexels.com...' value=`${info.query.url}` id='url')
+                    input(type="text" name='title' placeholder='yout title here...' value=`${info.query.title}` id='title')
+                    textarea(cols="30", rows="10", name='description', placeholder='Description...' id='description') #{info.query.description}
+                    input(type="submit", value="Update Blog" id='submit').update

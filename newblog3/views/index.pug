@@ -1,0 +1,48 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        link(rel="stylesheet", href="css/style.css")
+        script(src="js/script.js")
+        script(src='https://unpkg.com/axios/dist/axios.min.js')  
+        script. 
+
+            const getPosts = async () => {
+                const res = await axios.get('http://localhost:4000/api/post')
+                console.log('res: ', res.data)
+            }
+            getPosts()
+
+        title Home
+    body 
+        nav.navbar
+            ul 
+                li 
+                    a(href="/") home
+                li 
+                    a(href="/addpost") add post
+                if user === 'null'
+                    li 
+                        a(href="/login") login
+                    li 
+                        a(href="/register") register 
+                else
+                    div.left
+                        li 
+                            strong welcome #{user.name} 
+                        li 
+                            a(href="/logout").btn.logout logout  
+        div.container
+            each p in posts 
+                a(href=`/api/post/${p.id}`)
+                    div.blog_container 
+                        div.img_container 
+                            img(src=`${p.url}`, alt="")
+                        div.info
+                            h1 #{p.title}
+                            p #{p.description.length > 50 ? p.description.slice(0, 50)+'...' : p.description}
+                        div.info
+                            p Created By: #{p.name ? p.name : 'nobody'}
+                            p At: #{(p.createdAt)}

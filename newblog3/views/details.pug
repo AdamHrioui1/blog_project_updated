@@ -1,0 +1,57 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        link(rel="stylesheet", href="../../css/style.css")
+        script(src='https://unpkg.com/axios/dist/axios.min.js')  
+        script.
+            document.addEventListener("DOMContentLoaded", function(event) {
+                console.log('wooooooooooow')
+                let id = window.location.pathname.split('/')[3]
+                const delete_post = document.getElementById('delete_post')
+
+                console.log(delete_post)
+                const deletPost = function() {
+                    axios.delete(`http://localhost:4000/api/post/${id}`)
+                    .then(data => console.log(data))
+                    .catch(err => console.log(err))
+                    window.location.href = '/'
+                }
+
+                delete_post.addEventListener('click', deletPost)
+
+            })
+        title Home
+    body
+        nav.navbar
+            ul 
+                li 
+                    a(href="/") home
+                li 
+                    a(href="/addpost") add post
+                if user === 'null'
+                    li 
+                        a(href="/login") login
+                    li 
+                        a(href="/register") register 
+                else
+                    div.left
+                        li 
+                            strong welcome #{user.name} 
+                        li 
+                            a(href="/logout").btn.logout logout
+        div.details_container
+            div.details_blog_container 
+                div.details_img_container 
+                    img(src=`${postDetails.url}`, alt="")
+                div.details_info
+                    h1 #{postDetails.title}
+                    p #{postDetails.description}
+                    p Created By: #{postDetails.name ? postDetails.name : 'nobody'}
+                    p At: #{(postDetails.createdAt)}
+                div.btns_container     
+                    if postDetails.userId === user._id 
+                        a(href=`/update/${postDetails.id}?url=${postDetails.url}&title=${postDetails.title}&description=${postDetails.description}`).btn.update update
+                        div.btn.red#delete_post delete
